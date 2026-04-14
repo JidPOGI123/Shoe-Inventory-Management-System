@@ -1,88 +1,120 @@
+<?php
+session_start();
+
+// 🔒 PROTECT PAGE
+if (!isset($_SESSION['user'])) {
+    header("Location: index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>About</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #121418;
-    color: #fff;
-    display: flex;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial;
 }
 
-/* SIDEBAR (same style) */
+body {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #0ea5e9);
+  color: white;
+}
+
+/* SIDEBAR GLASS */
 .sidebar {
-    width: 220px;
-    background: #1c1f26;
-    height: 100vh;
-    padding: 20px;
+  width: 240px;
+  padding: 20px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-right: 1px solid rgba(255,255,255,0.15);
 }
 
 .sidebar h2 {
-    color: #c1c7ff;
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  color: #38bdf8;
+  margin-bottom: 20px;
 }
 
 .sidebar ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
 }
 
 .sidebar ul li {
-    margin: 12px 0;
+  margin: 12px 0;
 }
 
 .sidebar ul li a {
-    display: block;
-    padding: 10px 12px;
-    color: #b3b8c2;
-    text-decoration: none;
-    border-radius: 6px;
-    text-align: left;
+  display: block;
+  padding: 10px;
+  border-radius: 8px;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: 0.2s;
 }
 
 .sidebar ul li a:hover {
-    background: #2a2f3a;
-    color: #fff;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(5px);
+}
+
+.logout {
+  color: #f87171 !important;
+  margin-top: 10px;
 }
 
 /* MAIN */
 .main {
-    flex: 1;
-    padding: 30px;
+  flex: 1;
+  padding: 30px;
 }
 
-/* CARD */
-.card {
-    background: #1c1f26;
-    padding: 25px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-}
-
+/* TITLE */
 h1 {
-    color: #c1c7ff;
-    margin-bottom: 20px;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* CARDS */
+.card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.15);
+
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.02);
 }
 
 h2 {
-    color: #3b82f6;
-    margin-bottom: 10px;
+  color: #38bdf8;
+  margin-bottom: 10px;
 }
 
 p, li {
-    color: #d1d5db;
-    line-height: 1.6;
+  color: #cbd5e1;
+  line-height: 1.6;
 }
 
 ul {
-    padding-left: 20px;
+  padding-left: 20px;
 }
 </style>
 </head>
@@ -91,57 +123,53 @@ ul {
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <h2>📦 Menu</h2>
+  <h2>MENU</h2>
+
   <ul>
-    <li><a href="index.php">Dashboard</a></li>
+    <li><a href="dashboard.php">Dashboard</a></li>
     <li><a href="about.php">About</a></li>
     <li><a href="contact.php">Contact</a></li>
     <li><a href="developer.php">Developer</a></li>
+    <li><a class="logout" href="index.php">Logout</a></li>
   </ul>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div class="main">
 
 <h1>📘 About the Project</h1>
 
-<!-- PROJECT TITLE -->
 <div class="card">
     <h2>Project Title</h2>
     <p><strong>👟 Shoe Inventory Management System</strong></p>
 </div>
 
-<!-- PURPOSE -->
 <div class="card">
     <h2>Purpose of the System</h2>
     <p>
-        The purpose of this system is to manage product data efficiently.
-        It allows users to add, view, update, and delete products using a web interface.
-        This project demonstrates how CRUD operations work in a real-world web application.
+        This system is designed to manage product inventory efficiently using CRUD operations.
+        It allows users to add, view, update, and delete products through a modern web interface.
     </p>
 </div>
 
-<!-- FEATURES -->
 <div class="card">
     <h2>System Features</h2>
     <ul>
-        <li>Create new product records</li>
-        <li>Read and display product data</li>
-        <li>Update existing product information</li>
-        <li>Delete unwanted products</li>
-        <li>User-friendly dashboard interface</li>
+        <li>Create product records</li>
+        <li>Read product data</li>
+        <li>Update product information</li>
+        <li>Delete products</li>
+        <li>Modern dashboard UI</li>
     </ul>
 </div>
 
-<!-- TECHNOLOGIES -->
 <div class="card">
     <h2>Technologies Used</h2>
     <ul>
-        <li>XAMPP (Local server environment)</li>
-        <li>PHP (Backend scripting)</li>
-        <li>MySQL / phpMyAdmin (Database management)</li>
-        <li>HTML, CSS (Frontend design)</li>
-        <li>InfinityFree (Hosting platform)</li>
+        <li>PHP</li>
+        <li>MySQL</li>
+        <li>HTML & CSS</li>
+        <li>XAMPP / InfinityFree</li>
     </ul>
 </div>
 
