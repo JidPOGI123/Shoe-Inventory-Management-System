@@ -1,5 +1,11 @@
 <?php
-// Optional: handle form submission later
+session_start();
+
+// 🔒 PROTECT PAGE
+if (!isset($_SESSION['user'])) {
+    header("Location: index.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -7,121 +13,159 @@
 <head>
 <meta charset="UTF-8">
 <title>Contact</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #121418;
-    color: #fff;
-    display: flex;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial;
 }
 
-/* SIDEBAR */
+body {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #0ea5e9);
+  color: white;
+}
+
+/* SIDEBAR GLASS */
 .sidebar {
-    width: 220px;
-    background: #1c1f26;
-    height: 100vh;
-    padding: 20px;
+  width: 240px;
+  padding: 20px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-right: 1px solid rgba(255,255,255,0.15);
 }
 
 .sidebar h2 {
-    color: #c1c7ff;
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  color: #38bdf8;
+  margin-bottom: 20px;
 }
 
 .sidebar ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
 }
 
 .sidebar ul li {
-    margin: 12px 0;
+  margin: 12px 0;
 }
 
 .sidebar ul li a {
-    display: block;
-    padding: 10px 12px;
-    color: #b3b8c2;
-    text-decoration: none;
-    border-radius: 6px;
+  display: block;
+  padding: 10px;
+  border-radius: 8px;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: 0.2s;
 }
 
 .sidebar ul li a:hover {
-    background: #2a2f3a;
-    color: #fff;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(5px);
 }
 
-/* MAIN (CENTER EVERYTHING) */
+.logout {
+  color: #f87171 !important;
+}
+
+/* MAIN */
 .main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
-/* WRAPPER FOR CENTER ALIGN */
+/* CONTAINER */
 .container {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  gap: 25px;
 }
 
-/* CARD */
+/* GLASS CARD */
 .card {
-    background: #1c1f26;
-    padding: 25px;
-    border-radius: 10px;
-    width: 320px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+  width: 320px;
+  padding: 25px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 /* TITLE */
 h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #c1c7ff;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #38bdf8;
 }
 
-/* INPUTS */
+/* INPUT */
 input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 12px;
-    border: none;
-    border-radius: 5px;
-    background: #2a2f3a;
-    color: #fff;
-    outline: none;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+
+  border: none;
+  border-radius: 10px;
+  outline: none;
+
+  background: rgba(255,255,255,0.12);
+  color: white;
+  transition: 0.2s;
+}
+
+input:focus, textarea:focus {
+  background: rgba(255,255,255,0.2);
 }
 
 /* BUTTON */
 button {
-    width: 100%;
-    padding: 10px;
-    background: #3b82f6;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
+  width: 100%;
+  padding: 12px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #38bdf8;
+  color: black;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 button:hover {
-    background: #2563eb;
+  background: #22c55e;
+  transform: scale(1.03);
 }
 
 /* INFO TEXT */
 .info p {
-    margin: 10px 0;
-    color: #d1d5db;
+  margin: 10px 0;
+  color: #cbd5e1;
 }
 
 .info strong {
-    color: #3b82f6;
+  color: #38bdf8;
+}
+
+/* SMALL NOTE */
+.note {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #94a3b8;
 }
 </style>
 </head>
@@ -130,39 +174,45 @@ button:hover {
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <h2>📦 Menu</h2>
+  <h2>MENU</h2>
+
   <ul>
-    <li><a href="index.php">Dashboard</a></li>
+    <li><a href="dashboard.php">Dashboard</a></li>
     <li><a href="about.php">About</a></li>
     <li><a href="contact.php">Contact</a></li>
     <li><a href="developer.php">Developer</a></li>
+    <li><a class="logout" href="index.php">Logout</a></li>
   </ul>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div class="main">
 
 <div class="container">
 
-    <!-- CONTACT INFO -->
+    <!-- INFO CARD -->
     <div class="card info">
-        <h2>Contact Information</h2>
+        <h2>Contact Info</h2>
 
         <p><strong>📞 Phone:</strong> +63 912 345 6789</p>
         <p><strong>📧 Email:</strong> shoeinventory@email.com</p>
-        <p><strong>📍 Location:</strong> San Pablo City, Laguna, Philippines</p>
+        <p><strong>📍 Location:</strong> San Pablo City, Laguna</p>
     </div>
 
-    <!-- CONTACT FORM -->
+    <!-- FORM CARD -->
     <div class="card">
         <h2>Send Message</h2>
 
-        <form action="contact.php" method="POST">
+        <form method="POST">
             <input type="text" name="name" placeholder="Your Name" required>
             <input type="email" name="email" placeholder="Your Email" required>
             <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-            <button type="submit">Send Message</button>
+            <button type="submit">Send</button>
         </form>
+
+        <div class="note">
+            Demo only (no database yet)
+        </div>
     </div>
 
 </div>
